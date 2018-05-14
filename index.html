@@ -1,18 +1,140 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<title>Tech Taqwa University</title>
 	<style type="text/css">
+		@keyframes pulse
+		{
+			0%
+			{
+				transform: scale(.9);
+			}
+			100%
+			{
+				transform: scale(1.1);
+			}
+		}
+		@font-face
+		{
+			font-family: playlist;
+			src: url(https://www.dropbox.com/s/toabyb46sxn3rrm/Playlist%20Script.otf?dl=1);
+		}
+		@font-face
+		{
+			font-family: freight;
+			src: url(Freight_Text_Book.otf);
+		}	
+		body
+		{
+			text-align: center;
+			background-color: #EDEDF1;
+			overflow-x: hidden;
+			overflow-y: hidden;
+		}
+		#env
+		{
+			position: relative;
+			animation-name: pulse;
+			animation-duration: 1s; 
+			animation-timing-function: ease-out; 
+  			animation-delay: 0s;
+ 		 	animation-direction: alternate;
+  			animation-iteration-count: infinite;
+  			animation-fill-mode: none;
+  			animation-play-state: running;
+  		}
+  		#env:hover
+  		{
+  			cursor:pointer;
+  		}
 	</style>
 	<script type="text/javascript">
-		function change()
+		function initialize()
 		{
-			document.getElementById('img').src = "https://i.imgur.com/JTBCKSj.png";
+			var deviceY = window.screen.height * window.devicePixelRatio;
+			var centerY = deviceY/2;
+			var env = document.getElementById('env');
+			var envY = env.height;
+			var envYcenter = envY/2;
+			var top = centerY - envYcenter;
+			var deviceX = window.screen.width * window.devicePixelRatio;
+			var centerX = deviceX/2;
+			var envX = env.width;
+			var envXCenter = envX/2;
+			var left = centerX - envXCenter;
+			env.style.top = top + 'px';
+		}
+		function fade(element) {
+		    var op = 1;  // initial opacity
+		    var timer = setInterval(function () {
+		        if (op <= 0.1){
+		            clearInterval(timer);
+		            element.style.display = 'none';
+		            document.body.removeChild(document.getElementById('env'));
+		            addCanvas();
+		        }
+		        element.style.opacity = op;
+		        element.style.filter = 'alpha(opacity=' + op * 100 + ")";
+		        op -= op * 0.1;
+		    }, 50);
+		}
+		function unfade(element) {
+  			var op = 0.1;  // initial opacity
+    		element.style.display = 'block';
+    		var timer = setInterval(function () {
+        		if (op >= 1){
+            		clearInterval(timer);
+        		}
+        		element.style.opacity = op;
+        		element.style.filter = 'alpha(opacity=' + op * 100 + ")";
+        		op += op * 0.1;
+    		}, 50);
+		}
+		function addCanvas()
+		{
+			newCanv = document.createElement('canvas');
+			newCanv.id = 'canvas';
+			document.body.appendChild(newCanv);
+			initConf();
+			Draw();
+			var confTime = setTimeout(function(){ document.body.removeChild(document.getElementById('canvas')); addLetter(); clearTimeout(confTime); }, 3000);
+		}
+		function addLetter()
+		{
+			var newMessage = document.createElement('span');
+			newMessage.style.fontFamily = 'playlist';
+			newMessage.style.fontSize = '75px';
+			newMessage.style.color = '#A48640';
+			newMessage.innerHTML = 'Congratulations!';
+			newMessage.style.display = 'block';
+			var newLetter = document.createElement('span');
+			newLetter.style.fontFamily = 'freight';
+			newLetter.style.fontSize = '28px';
+			newLetter.style.color = '#A48640';
+			newLetter.innerHTML = 'I am delighted to inform you that Tech Taqwa University has admitted you to the 2018 senior program. Please accept my personal congratulations for your outstanding achievements. <br /><br /> In recent years, nearly twenty thousand students have applied for the sixteen hundred and fifty places in the freshman class. Faced with many more talented and highly qualified candidates than it has room to admit, the Admissions Committee has taken great care to choose individuals who present extraordinary academic, extracurricular and personal strengths. In making each admission decision, the Committee keeps in mind that the excellence depends most of all on the talent and promise of the people assembled here, particularly our students. In voting to offer you admission, Tech Taqwa University has demonstrated its firm belief that you can make important contributions during your college years and beyond. <br /><br /> You have been invited to a mandatory orientation on May 14 in room 2W6. Our faculty and students have arranged a special welcome for you and we think the experience will be interesting and useful in making your final college choice. <br /><br /> We very much hope that you will decide to attend, and we look forward to seeing you. <br /><br /> Along with this message you have received a certificate acknowledging your achievements. <br /><br /><br />';
+			newLetter.style.display = 'inline-block';
+			newLetter.style.textAlign = 'justify';
+			document.body.style.overflowX = 'visible';
+			document.body.style.overflowY = 'visible';
+			var newSig = document.createElement('img');
+			newSig.src = 'sig.png';
+			newSig.style.display = 'block';
+			newSigCont = document.createElement('div');
+			newSigCont.style.textAlign = 'left';
+			newSigCont.appendChild(newSig);
+			document.body.appendChild(newMessage);
+			var newBreak = document.createElement('br');
+			document.body.appendChild(newBreak);
+			document.body.appendChild(newLetter);
+			document.body.appendChild(newSigCont);
+			unfade(newMessage);
+			unfade(newLetter);
+			unfade(newSigCont);
 		}
 	</script>
+	<script type="text/javascript" src="confetti.js"></script>
 </head>
-<body>
-	<img id="img" src="https://i.imgur.com/1snAuh4.png" />
-	<button onclick="change();">change</button>
-	<span>so the text that's appearing here is inside a span tag, i can manipulate these things so i can copy and paste mahmoud's letter and paste it into my html stuff and then make it pretty with css, ya feel?</span>
+<body onload="initialize();">
+	<img onclick="fade(this);" id="env" src="env.png">
 </body>
 </html>
